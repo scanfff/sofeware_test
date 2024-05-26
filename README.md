@@ -1,2 +1,0 @@
-# sofeware_test
-schoolwork
