@@ -11,6 +11,12 @@ class NewVisitorTest(unittest.TestCase):
     def tearDown(self):
         self.browser.quit()
 
+    def check_for_row_in_list_table(self,row_text):
+        table = self.browser.find_elements(By.ID, 'id_list_table')
+        rows = table.find_elements(By.TAG_NAME, 'tr')
+        self.assertIn(row_text,[row.text for row in rows])
+
+
     def test_can_start_a_list_and_retrieve_it_later(self):
         # Ellie goes to check out its homepage
         self.browser.get('http://localhost:8000')
@@ -28,15 +34,22 @@ class NewVisitorTest(unittest.TestCase):
             'Enter a to-do item'
         )
 
+        inputbox.send_keys(Keys.ENTER)
+        time.sleep(1)
+        self.check_for_row_in_list_table('1:Buy flowers')
+
         inputbox = self.browser.find_element(By.ID, 'id_new_item')
         inputbox.send_keys('Give a gift to Lisi')
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)  # Reduced sleep time for faster test execution
 
-        table = self.browser.find_element(By.ID, 'id_list_table')
-        rows = table.find_elements(By.TAG_NAME, 'tr')
-        self.assertIn('1: Buy flowers', [row.text for row in rows])
-        self.assertIn('2: Give a gift to List', [row.text for row in rows])
+        self.check_for_row_in_list_table('1:Buy flowers')
+        self.check_for_row_in_list_table('2:Give a gift to Lisi')
+
+        # table = self.browser.find_element(By.ID, 'id_list_table')
+        # rows = table.find_elements(By.TAG_NAME, 'tr')
+        # self.assertIn('1: Buy flowers', [row.text for row in rows])
+        # self.assertIn('2: Give a gift to List', [row.text for row in rows])
 
         self.fail('Finish the test!')
 
