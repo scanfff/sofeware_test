@@ -4,6 +4,8 @@ import time
 import unittest
 from selenium.webdriver.common.by import By
 
+#12
+
 class NewVisitorTest(unittest.TestCase):
     def setUp(self):
         self.browser = webdriver.Chrome()
